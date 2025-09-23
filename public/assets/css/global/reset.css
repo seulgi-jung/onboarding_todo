@@ -1,7 +1,16 @@
 body,
 div,
 button,
-input {
+input,
+form,
+header,
+section,
+footer,
+h1,
+h2,
+h3,
+h4,
+h5 {
   margin: 0;
   padding: 0;
 }
@@ -37,9 +46,22 @@ button {
   color: inherit;
   border: 0;
   background: none;
+  cursor: pointer;
 }
 
-input[type='checkbox'] {
+em {
+  font-style: normal;
+}
+
+label {
+  cursor: pointer;
+}
+
+strong {
+  font-weight: 400;
+}
+
+/* input[type='checkbox'] {
   overflow: hidden;
   position: absolute;
   top: 0;
@@ -50,12 +72,5 @@ input[type='checkbox'] {
   text-indent: -9999px;
   white-space: nowrap;
   outline: 0;
-}
-
-em {
-  font-style: normal;
-}
-
-label {
-  cursor: pointer;
-}
+} 
+  */

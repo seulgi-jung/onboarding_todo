@@ -1,4 +1,3 @@
-import { html } from 'lit';
 import { styleMap } from 'lit/directives/style-map.js';
 
 import './BasicCheckbox.css';

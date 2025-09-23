@@ -1,0 +1,35 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+}
+
+.blind {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  font-size: 1px;
+  text-indent: -9999px;
+  white-space: nowrap;
+  outline: 0;
+}
+
+.common-scroll-area {
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* scrollbar-gutter: stable; */
+}
+.common-scroll-area::-webkit-scrollbar {
+  width: 5px;
+}
+.common-scroll-area::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background: #ddd;
+}
+.common-scroll-area::-webkit-scrollbar-thumb {
+  background: #c4c4c4;
+  border-radius: 10px;
+}

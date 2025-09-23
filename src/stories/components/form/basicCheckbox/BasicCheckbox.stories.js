@@ -1,6 +1,6 @@
 import { fn } from 'storybook/test';
 
-import { BasicCheckbox } from './BasicCheckbox';
+import { BasicCheckbox } from '/src/components/form/basicCheckbox/BasicCheckbox';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 export default {
@@ -16,5 +16,7 @@ export const Input = {
   args: {
     key: 'checkbox',
     label: 'checkbox',
+    disabled: false,
+    checked: false,
   },
 };

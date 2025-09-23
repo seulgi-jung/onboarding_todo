@@ -1,0 +1,25 @@
+.todo-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--padding-type1);
+  border-top: 1px solid var(--border-color);
+}
+
+.todo-filter {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-todo-filter {
+  padding: 4px 4px 0;
+}
+
+.btn-todo-filter.is-active {
+  border: 1px solid red;
+  border-radius: 4px;
+}
+
+.todo-summary {
+  padding-top: 2px;
+}

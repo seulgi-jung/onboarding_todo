@@ -1,0 +1,7 @@
+.todo-empty-area {
+  padding: 24px var(--padding-type1);
+}
+
+.todo-empty-msg {
+  color: gray;
+}

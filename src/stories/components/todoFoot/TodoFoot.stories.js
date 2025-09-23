@@ -1,17 +1,17 @@
 import { fn } from 'storybook/test';
 
-import { TodoList } from '/src/components/todo/todoList/TodoList';
+import { TodoFoot } from '/src/components/todo/todoFoot/TodoFoot';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
 export default {
-  title: 'Component/Todo/List',
-  render: (args) => TodoList(args),
+  title: 'Component/Todo/Foot',
+  render: (args) => TodoFoot(args),
   argTypes: {},
   args: { onClick: fn() },
 };
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const List = {
+export const Foot = {
   args: {
     todos: [
       {
