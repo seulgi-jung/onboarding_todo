@@ -1,0 +1,61 @@
+body,
+div,
+button,
+input {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', 'AppleSDGothicNeo-Regular', 'Apple SD Gothic Neo', sans-serif;
+  color: #333;
+  font-size: 16px;
+  word-break: keep-all;
+  word-wrap: break-word;
+}
+
+input,
+button {
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+}
+
+ul {
+  list-style: none;
+}
+
+input {
+  border: 0;
+}
+
+input::placeholder {
+  color: gray;
+}
+
+button {
+  color: inherit;
+  border: 0;
+  background: none;
+}
+
+input[type='checkbox'] {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  font-size: 1px;
+  text-indent: -9999px;
+  white-space: nowrap;
+  outline: 0;
+}
+
+em {
+  font-style: normal;
+}
+
+label {
+  cursor: pointer;
+}
