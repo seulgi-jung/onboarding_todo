@@ -6,20 +6,20 @@ export const TodoList = ({ todos }) => {
   const rendor = function () {
     return todos.map(function (todo) {
       return `
-        <div class="todo-list-item" data-key="${todo.key}">
+        <li class="todo-list-item ${todo.complete ? 'is-complete' : ''}" data-key="${todo.key}">
           ${BasicCheckbox({
             label: todo.value,
             checked: todo.complete,
             key: todo.key,
           })}
-        </div>
+        </li>
       `;
     });
   };
 
   return `
-    <div class="todo-list"> 
+    <ul class="todo-list"> 
       ${rendor().join('')}
-    </div>
+    </ul>
   `;
 };

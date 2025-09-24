@@ -4,7 +4,8 @@ import { TodoList } from '../../components/todo/todoList/TodoList';
 import { TodoEmpty } from '../../components/todo/todoEmpty/TodoEmpty';
 import { TodoFoot } from '../../components/todo/TodoFoot/TodoFoot';
 
-export const Todo = ({ todos }) => {
+export const existTodo = () => {};
+export const Todo = ({ todos, todoState }) => {
   return ` 
     <section class="todo-section">
       <header class="blind"> 
@@ -27,7 +28,9 @@ export const Todo = ({ todos }) => {
               })
         }
         </div>
-          ${TodoFoot({ todos })}
+          ${TodoFoot({
+            todoState,
+          })}
       </div>
     </section>`;
 };

@@ -11,15 +11,13 @@
   gap: 8px;
 }
 
-.btn-todo-filter {
+.btn-todo-filter,
+.todo-summary,
+.btn-clear {
   padding: 4px 4px 0;
 }
 
 .btn-todo-filter.is-active {
   border: 1px solid red;
   border-radius: 4px;
-}
-
-.todo-summary {
-  padding-top: 2px;
 }
