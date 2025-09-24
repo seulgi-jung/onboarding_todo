@@ -1,4 +1,3 @@
-import './style.css';
 
 import { Todo } from './pages/todo/Todo.js';
 import { TodoList } from './components/todo/todoList/TodoList';
