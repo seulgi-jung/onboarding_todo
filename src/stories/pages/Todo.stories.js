@@ -30,5 +30,9 @@ export const TodoListApp = {
         checked: false,
       },
     ],
+    todoState: {
+      complete: 1,
+      incomplete: 1,
+    },
   },
 };

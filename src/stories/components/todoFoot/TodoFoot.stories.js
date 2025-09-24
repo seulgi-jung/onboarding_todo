@@ -13,22 +13,9 @@ export default {
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Foot = {
   args: {
-    todos: [
-      {
-        value: '할 일 1',
-        key: 'todo1',
-        checked: false,
-      },
-      {
-        value: '할 일 2',
-        key: 'todo2',
-        checked: false,
-      },
-      {
-        value: '할 일 3',
-        key: 'todo3',
-        checked: false,
-      },
-    ],
+    todoState: {
+      complete: 1,
+      incomplete: 1,
+    },
   },
 };
