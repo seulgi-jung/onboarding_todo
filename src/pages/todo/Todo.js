@@ -1,10 +1,10 @@
 import './Todo.css';
 import { TodoInput } from '../../components/todo/todoInput/TodoInput';
-import { TodoList } from '../../components/todo/todoList/TodoList';
+import { TodoList } from '../../components/todo/todoList/TodoList.js';
 import { TodoEmpty } from '../../components/todo/todoEmpty/TodoEmpty';
 import { TodoFoot } from '../../components/todo/TodoFoot/TodoFoot';
+import { EMPTY_MSG, INPUT_PLACEHOLDER } from '../../const/todo.const.js';
 
-export const existTodo = () => {};
 export const Todo = ({ todos, todoState }) => {
   return ` 
     <section class="todo-section">
@@ -14,17 +14,17 @@ export const Todo = ({ todos, todoState }) => {
       <div class="todo-inner">
         <div class="todo-head">
           ${TodoInput({
-            placeholder: 'What needs to be done',
+            placeholder: INPUT_PLACEHOLDER,
           })}
         </div>
         <div class="todo-body common-scroll-area">
         ${
           todos && todos.length > 0
-            ? TodoList({
+            ? `${TodoList({
                 todos,
-              })
+              })}`
             : TodoEmpty({
-                msg: 'There are no to-do items. Please write your to-dos',
+                msg: EMPTY_MSG,
               })
         }
         </div>

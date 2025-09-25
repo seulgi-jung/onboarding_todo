@@ -32,12 +32,14 @@ button {
   outline: none;
 }
 
-ul {
+ul,
+li {
   list-style: none;
 }
 
 input {
   border: 0;
+  vertical-align: top;
 }
 
 input::placeholder {
