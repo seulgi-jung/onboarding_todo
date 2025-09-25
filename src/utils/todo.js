@@ -38,7 +38,6 @@ export class TodoListApp extends TodoFilter {
       $input.value = '';
       this.todoState.incomplete++;
       addTodo.bind(this)(value);
-      console.log(this);
 
       renderList.bind(this)(this.todos);
 
