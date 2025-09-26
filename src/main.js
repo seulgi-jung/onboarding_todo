@@ -1,22 +1,12 @@
-
 import { Todo } from './pages/todo/Todo.js';
-import { TodoList } from './components/todo/todoList/TodoList';
+import { TodoList } from './components/todo/todoList/TodoList.js';
 import { TodoEmpty } from './components/todo/todoEmpty/TodoEmpty';
 
-//todo 옮길 예정
-const EMPTY_MSG = 'There are no to-do items. Please write your to-dos';
-const FILTER_STATE = {
-  ALL: 'all',
-  ACTIVE: 'active',
-  COMPLETE: 'complete',
-};
+import { EMPTY_MSG, FILTER_STATE } from './const/todo.const.js';
 
-class DragAndDrop {
-  draggable() {}
-  init() {
-    console.log('drag');
-  }
-}
+import { getTodos, setTodos } from './service/todo.service.js';
+
+import { DragAndDrop } from './utils/dnd.js';
 
 class TodoFilter {
   filterState = FILTER_STATE.ALL;
@@ -24,19 +14,19 @@ class TodoFilter {
   filterComplete() {
     const filteredTodo = this.todos.filter((todo) => todo.complete);
 
-    this.rendorList(filteredTodo);
+    this.renderList(filteredTodo);
     this.filterState = FILTER_STATE.COMPLETE;
   }
 
   filterActive() {
     const filteredTodo = this.todos.filter((todo) => !todo.complete);
 
-    this.rendorList(filteredTodo);
+    this.renderList(filteredTodo);
     this.filterState = FILTER_STATE.ACTIVE;
   }
 
   filterAll() {
-    this.rendorList(this.todos);
+    this.renderList(this.todos);
     this.filterState = FILTER_STATE.ALL;
   }
 
@@ -51,12 +41,15 @@ class TodoFilter {
   }
 
   deleteCompleteTodo() {
-    const _this = this;
-    this.$btnClear.addEventListener('click', function () {
-      const filterdTodo = _this.todos.filter(({ complete }) => !complete);
-      _this.todos = filterdTodo;
-      _this.rendorList(_this.todos);
-      localStorage.setItem('todos', JSON.stringify(_this.todos));
+    this.$btnClear.addEventListener('click', () => {
+      const filteredTodo = this.todos.filter(({ complete }) => !complete);
+
+      this.todos = filteredTodo;
+      this.todoState.complete = 0;
+      this.updateSummary();
+      this.renderList(this.todos);
+
+      setTodos(this.id, this.todos);
     });
   }
 
@@ -64,12 +57,12 @@ class TodoFilter {
     this.$filter = this.$wrapper.querySelector('.todo-filter');
     this.$btnFilter = this.$wrapper.querySelectorAll('.btn-todo-filter');
     this.$incomplete = this.$wrapper.querySelector('#incomplete');
-    this.$Complete = this.$wrapper.querySelector('#complete');
+    this.$complete = this.$wrapper.querySelector('#complete');
     this.$btnClear = this.$wrapper.querySelector('.btn-clear');
   }
 
   updateSummary() {
-    this.$Complete.innerText = this.todoState.complete;
+    this.$complete.innerText = this.todoState.complete;
     this.$incomplete.innerText = this.todoState.incomplete;
   }
 
@@ -82,23 +75,21 @@ class TodoFilter {
   }
 
   filter() {
-    const _this = this;
-
-    this.$filter.addEventListener('click', function (e) {
+    this.$filter.addEventListener('click', (e) => {
       const $target = e.target;
 
-      if (!_this.todos || _this.todos.length < 1) return;
+      if (!this.todos || this.todos.length < 1) return;
 
       if ($target.classList.contains('btn-todo-active')) {
-        _this.filterActive();
+        this.filterActive();
       } else if ($target.classList.contains('btn-todo-completed')) {
-        _this.filterComplete();
+        this.filterComplete();
       } else if ($target.classList.contains('btn-todo-all')) {
-        _this.filterAll();
+        this.filterAll();
       }
 
       if ($target.classList.contains('btn-todo-filter')) {
-        _this.changeClass($target);
+        this.changeClass($target);
       }
     });
   }
@@ -116,30 +107,27 @@ class TodoListApp extends TodoFilter {
     incomplete: 0,
   };
 
-  constructor({ wrapper, options }) {
+  useDnd = false;
+
+  constructor({ id, wrapper, options }) {
     super();
 
     this.$wrapper = wrapper;
-    this.todos = this.getTodos();
-    this.setTodoState();
-  }
 
-  getTodos() {
-    const todos = localStorage.getItem('todos');
-    return todos ? JSON.parse(todos) : [];
+    this.id = 'todo_' + id;
+    this.todos = getTodos(this.id);
+    this.setTodoState();
+    if (options?.useDnd) this.useDnd = true;
   }
 
   setTodoState() {
-    const _this = this;
-    this.todos.forEach(function (todo) {
-      todo.complete ? _this.todoState.complete++ : _this.todoState.incomplete++;
+    this.todos.forEach((todo) => {
+      todo.complete ? this.todoState.complete++ : this.todoState.incomplete++;
     });
   }
 
   onSubmit() {
-    const _this = this;
-
-    this.$form.addEventListener('submit', function (e) {
+    this.$form.addEventListener('submit', (e) => {
       e.preventDefault();
 
       const $target = e.target;
@@ -148,8 +136,11 @@ class TodoListApp extends TodoFilter {
       if (!value) return;
 
       $input.value = '';
-      _this.addTodo(value);
-      _this.rendorListItem();
+      this.todoState.incomplete++;
+      this.addTodo(value);
+      this.renderList(this.todos);
+
+      if (this.filterState) this.updateSummary();
     });
   }
 
@@ -162,7 +153,7 @@ class TodoListApp extends TodoFilter {
     };
     this.todos.unshift(todo);
 
-    localStorage.setItem('todos', JSON.stringify(this.todos));
+    setTodos(this.id, this.todos);
   }
 
   updateTodo(targetKey) {
@@ -182,8 +173,8 @@ class TodoListApp extends TodoFilter {
     } else {
       this.todos = [targetTodo, ...filteredTodos];
     }
-    this.rendorList(this.todos);
-    localStorage.setItem('todos', JSON.stringify(this.todos));
+    this.renderList(this.todos);
+    setTodos(this.id, this.todos);
   }
 
   updateTodoState(targetChecked) {
@@ -197,9 +188,7 @@ class TodoListApp extends TodoFilter {
   }
 
   changeComplete() {
-    const _this = this;
-
-    this.$todo_body.addEventListener('change', function (e) {
+    this.$todo_body.addEventListener('change', (e) => {
       const $target = e.target;
       if (
         $target.classList.contains('base-checkbox') ||
@@ -209,27 +198,25 @@ class TodoListApp extends TodoFilter {
         const targetChecked = $target.checked;
         if (!targetKey) return;
 
-        _this.updateTodo(targetKey);
+        this.updateTodo(targetKey);
 
-        if (!_this.filterState) return;
-        _this.updateTodoState(targetChecked);
-        _this.updateFilter();
-        _this.updateSummary();
+        if (!this.filterState) return;
+        this.updateTodoState(targetChecked);
+        this.updateFilter();
+        this.updateSummary();
       }
     });
   }
 
-  rendorListItem() {
-    this.$todo_body.innerHTML = TodoList({
-      todos: this.todos,
-    });
-  }
-
-  rendorList(todos) {
+  renderList(todos) {
     if (todos.length > 0) {
       this.$todo_body.innerHTML = TodoList({
         todos: todos,
       });
+      if (!this.Dnd) return;
+
+      this.$todo_list = this.$wrapper.querySelector('.todo-list');
+      this.Dnd.updateDropzone(this.$todo_list);
     } else {
       this.$todo_body.innerHTML = TodoEmpty({
         msg: EMPTY_MSG,
@@ -237,7 +224,7 @@ class TodoListApp extends TodoFilter {
     }
   }
 
-  rendorTodo() {
+  renderTodo() {
     this.$wrapper.innerHTML = Todo({
       todos: this.todos,
       todoState: this.todoState,
@@ -247,22 +234,82 @@ class TodoListApp extends TodoFilter {
   initSelectors() {
     this.$form = this.$wrapper.querySelector('.todo-form');
     this.$todo_body = this.$wrapper.querySelector('.todo-body');
+    this.$todo_list = this.$wrapper.querySelector('.todo-list');
     this.$todo_foot = this.$wrapper.querySelector('.todo-foot');
   }
 
+  initDnd() {
+    const TodoListApp = this;
+
+    this.Dnd = new DragAndDrop({
+      buttonClass: 'btn-drag',
+      draggableClass: 'todo-list-item',
+      dropzone: this.$todo_list,
+    });
+    this.Dnd.init();
+
+    // todos 데이터 바꾸기
+    this.Dnd.customEvent = function () {
+      const dragKey = this.$dragItem.dataset.key;
+      const insertKey = this.$insertItem.dataset.key;
+
+      let dragTodo = null;
+
+      // 이동한 요소 삭제
+      const filteredTodo = TodoListApp.todos.filter(function (todo) {
+        if (todo.key != dragKey) {
+          return todo;
+        }
+        dragTodo = todo;
+      });
+
+      // 이동할 요소 위치 찾기
+      let insertTodoIndex = 0;
+      filteredTodo.forEach(function ({ key }, index) {
+        if (key != insertKey) return;
+        insertTodoIndex = index;
+      });
+
+      if (this.insertDirection === 'after') insertTodoIndex++;
+      filteredTodo.splice(insertTodoIndex, 0, dragTodo);
+      TodoListApp.todos = filteredTodo;
+
+      setTodos(TodoListApp.id, TodoListApp.todos);
+    };
+  }
+
   init() {
-    this.rendorTodo();
+    this.renderTodo();
     this.initSelectors();
     this.initFilter();
     this.onSubmit();
     this.changeComplete();
+
+    if (!this.useDnd) return;
+    this.initDnd();
   }
 }
 
 const todoListApp = new TodoListApp({
-  wrapper: document.getElementById('app'),
+  id: '1',
+  wrapper: document.querySelector('#app'),
   options: {
     useDnd: true,
   },
 });
+
+const todoListApp2 = new TodoListApp({
+  id: '2',
+  wrapper: document.querySelector('#app2'),
+  options: {
+    useDnd: true,
+  },
+});
+
+const todoListApp3 = new TodoListApp({
+  id: '3',
+  wrapper: document.querySelector('#app3'),
+});
 todoListApp.init();
+todoListApp2.init();
+todoListApp3.init();

@@ -1,0 +1,8 @@
+.is-dragging {
+  border: 1px solid red !important;
+  pointer-events: none;
+}
+
+.drop-guideline {
+  border: 1px solid blue;
+}

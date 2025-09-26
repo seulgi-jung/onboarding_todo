@@ -1,25 +1,10 @@
 import './TodoList.css';
 
-import { BasicCheckbox } from '../../form/basicCheckbox/BasicCheckbox';
+import { TodoListItem } from '../todoListItem/TodoListItem';
 
 export const TodoList = ({ todos }) => {
-  const rendor = function () {
-    return todos.map(function (todo) {
-      return `
-        <li class="todo-list-item ${todo.complete ? 'is-complete' : ''}" data-key="${todo.key}">
-          ${BasicCheckbox({
-            label: todo.value,
-            checked: todo.complete,
-            key: todo.key,
-          })}
-        </li>
-      `;
-    });
-  };
-
   return `
-    <ul class="todo-list"> 
-      ${rendor().join('')}
-    </ul>
-  `;
+    <ul class="todo-list">
+      ${todos.map((todo) => TodoListItem({ todo })).join('')}
+    </ul>`;
 };

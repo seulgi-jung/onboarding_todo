@@ -1,0 +1,43 @@
+.todo-list-item {
+  position: relative;
+  display: flex;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+.todo-list-item .btn-drag {
+  margin-left: auto;
+  padding: 0 var(--padding-type1);
+}
+
+.todo-list-item .btn-drag svg {
+  vertical-align: top;
+  pointer-events: none;
+}
+
+.todo-list-item .base-checkbox {
+  flex: 1;
+  position: relative;
+  display: block;
+  min-width: 0;
+}
+
+.todo-list-item .base-checkbox input[type='checkbox'] {
+  position: absolute;
+  top: calc(var(--padding-type1) + 1px);
+  left: var(--padding-type1);
+}
+.todo-list-item .base-checkbox label {
+  display: block;
+  padding: var(--padding-type1) var(--padding-type1) var(--padding-type1)
+    calc(var(--padding-type1) + 20px);
+}
+
+.todo-list-item + .todo-list-item {
+  border-top: 1px solid var(--border-color);
+}
+
+.todo-list-item.is-complete {
+  color: #ddd;
+  text-decoration: line-through;
+}
