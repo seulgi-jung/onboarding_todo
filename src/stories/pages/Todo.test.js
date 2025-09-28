@@ -130,18 +130,4 @@ describe('Todo List App', () => {
     expect(document.querySelector('#complete').innerText).toBe(1);
     expect(document.querySelector('#incomplete').innerText).toBe(2);
   });
-
-  // 3. drag n drop
-  test('3-1. 데이터가 있을 떄 목록이 있는 지 확인', () => {
-    todoList.todos = [
-      { key: 1759101641385, value: '할 일3', complete: false },
-      { key: 1759101641385, value: '할 일2', complete: true },
-      { key: 1759101641391, value: '할 일1', complete: false },
-    ];
-    setTodoState.bind(todoList)();
-    updateSummary.bind(todoList)();
-
-    expect(document.querySelector('#complete').innerText).toBe(1);
-    expect(document.querySelector('#incomplete').innerText).toBe(2);
-  });
 });

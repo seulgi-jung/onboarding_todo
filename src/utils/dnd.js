@@ -44,7 +44,6 @@ export class DragAndDrop {
 
     if ($target.closest('.' + this.dropzoneClass + this.id)) {
       // dropzone 안에서 가이드라인 추가
-
       this.$insertItem = $target.closest('.' + this.draggableClass);
 
       if (!this.$insertItem) return;
