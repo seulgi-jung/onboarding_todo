@@ -1,5 +1,7 @@
 /** @type { import('@storybook/web-components-vite').Preview } */
+
 const preview = {
+  args: {},
   parameters: {
     controls: {
       matchers: {

@@ -1,11 +1,19 @@
-import { TodoFilter } from '../components/todo/todoFoot/TodoFoot';
+import { TodoFilter } from '../../utils/todo/todoFilter.js';
 
-import { getTodos, setTodos } from '../service/todo.service.js';
+import { getTodos, setTodos } from '../../service/todo.service.js';
 
-import { DragAndDrop } from './dnd.js';
-import { renderList, renderTodo } from '../utils/render/todo.rendor.js';
+import { DragAndDrop } from '../dnd.js';
+import { reorderList } from '../../store/dnd.store.js';
+import { renderList, renderTodo, updateSummary } from '../../ui/todo/todo.render.js';
+import { changeFilterList } from '../../ui/todo/todo.dom.js';
 
-import { changeCompleteTodo, updateTodoState, addTodo, setTodoState } from '../store/todo.store.js';
+import {
+  changeCompleteTodo,
+  updateTodoState,
+  addTodo,
+  setTodoState,
+  increaseIncomplete,
+} from '../../store/todo.store.js';
 
 export class TodoListApp extends TodoFilter {
   todoState = {
@@ -19,55 +27,62 @@ export class TodoListApp extends TodoFilter {
     super();
 
     this.$wrapper = wrapper;
-
     this.id = 'todo_' + id;
     this.todos = getTodos(this.id);
     setTodoState.bind(this)();
     if (options?.useDnd) this.useDnd = true;
   }
 
-  onSubmit() {
+  submitTodo() {
     this.$form.addEventListener('submit', (e) => {
       e.preventDefault();
 
       const $target = e.target;
       const $input = $target.querySelector('.todo-input');
       const value = $input.value;
-      if (!value) return;
+
+      if (!value) {
+        alert('값을 입력하세요');
+        return;
+      }
 
       $input.value = '';
-      this.todoState.incomplete++;
+
+      increaseIncomplete.bind(this)();
       addTodo.bind(this)(value);
 
-      renderList.bind(this)(this.todos);
+      // renderList.bind(this)(this.todos);
 
-      if (this.filterState) this.updateSummary();
+      if (this.filterState) {
+        updateSummary.bind(this)();
+        changeFilterList.bind(this)();
+      }
     });
   }
 
-  changeComplete() {
+  changeTodoState() {
     this.$todo_body.addEventListener('change', (e) => {
       const $target = e.target;
-      if (
-        $target.classList.contains('base-checkbox') ||
-        $target.parentNode.classList.contains('base-checkbox')
-      ) {
+
+      if ($target.closest('.base-checkbox')) {
         const targetKey = Number($target.parentNode.children[0].id);
         const targetChecked = $target.checked;
         if (!targetKey) return;
 
         changeCompleteTodo.bind(this)(targetKey);
+        renderList.bind(this)(this.todos);
 
         if (!this.filterState) return;
         updateTodoState.bind(this)(targetChecked);
         this.updateFilter();
 
-        this.updateSummary();
+        updateSummary.bind(this)();
       }
     });
   }
 
   initSelectors() {
+    this.$wrapper.id = this.id;
     this.$form = this.$wrapper.querySelector('.todo-form');
     this.$todo_body = this.$wrapper.querySelector('.todo-body');
     this.$todo_list = this.$wrapper.querySelector('.todo-list');
@@ -86,40 +101,20 @@ export class TodoListApp extends TodoFilter {
 
     // todos 데이터 바꾸기
     this.Dnd.customEvent = function () {
-      const dragKey = this.$dragItem.dataset.key;
-      const insertKey = this.$insertItem.dataset.key;
-
-      let dragTodo = null;
-
-      // 이동한 요소 삭제
-      const filteredTodo = TodoListApp.todos.filter(function (todo) {
-        if (todo.key != dragKey) {
-          return todo;
-        }
-        dragTodo = todo;
-      });
-
-      // 이동할 요소 위치 찾기
-      let insertTodoIndex = 0;
-      filteredTodo.forEach(function ({ key }, index) {
-        if (key != insertKey) return;
-        insertTodoIndex = index;
-      });
-
-      if (this.insertDirection === 'after') insertTodoIndex++;
-      filteredTodo.splice(insertTodoIndex, 0, dragTodo);
-      TodoListApp.todos = filteredTodo;
-
+      const filterdList = reorderList.bind(this)(TodoListApp.todos);
+      if (!filterdList) return;
+      TodoListApp.todos = filterdList;
       setTodos(TodoListApp.id, TodoListApp.todos);
     };
   }
 
   init() {
     renderTodo.bind(this)();
+
     this.initSelectors();
     this.initFilter();
-    this.onSubmit();
-    this.changeComplete();
+    this.submitTodo();
+    this.changeTodoState();
 
     if (!this.useDnd) return;
     this.initDnd();

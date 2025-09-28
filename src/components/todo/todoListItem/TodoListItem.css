@@ -27,6 +27,7 @@
   top: calc(var(--padding-type1) + 1px);
   left: var(--padding-type1);
 }
+
 .todo-list-item .base-checkbox label {
   display: block;
   padding: var(--padding-type1) var(--padding-type1) var(--padding-type1)

@@ -1,7 +1,8 @@
 .todo-section {
   max-width: 600px;
+  min-width: 320px;
   width: 100%;
-  height: 100%;
+  height: 500px;
   padding: var(--padding-type1);
   box-sizing: border-box;
 }
