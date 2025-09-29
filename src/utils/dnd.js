@@ -48,7 +48,7 @@ export class DragAndDrop {
 
       if (!this.$insertItem) return;
       setInsertDirection.bind(this)(e);
-      addGuideLine.bind(this)(e);
+      addGuideLine.bind(this)();
     } else {
       // dropzone 밖으로 나가면 가이드라인 삭제
       if (!this.$prevInsertItem) return;

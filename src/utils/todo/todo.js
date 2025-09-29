@@ -51,8 +51,6 @@ export class TodoListApp extends TodoFilter {
       increaseIncomplete.bind(this)();
       addTodo.bind(this)(value);
 
-      // renderList.bind(this)(this.todos);
-
       if (this.filterState) {
         updateSummary.bind(this)();
         changeFilterList.bind(this)();
@@ -101,9 +99,9 @@ export class TodoListApp extends TodoFilter {
 
     // todos 데이터 바꾸기
     this.Dnd.customEvent = function () {
-      const filterdList = reorderList.bind(this)(TodoListApp.todos);
-      if (!filterdList) return;
-      TodoListApp.todos = filterdList;
+      const filteredList = reorderList.bind(this)(TodoListApp.todos);
+      if (!filteredList) return;
+      TodoListApp.todos = filteredList;
       setTodos(TodoListApp.id, TodoListApp.todos);
     };
   }

@@ -35,7 +35,7 @@ export const addDragItem = function (e) {
   $guideline.before(this.$dropItem);
 };
 
-export const addGuideLine = function (e) {
+export const addGuideLine = function () {
   const $li = document.createElement('li');
   $li.classList.add(this.guidelineClass);
 
