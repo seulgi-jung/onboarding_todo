@@ -1,0 +1,30 @@
+.todo-section {
+  max-width: 600px;
+  min-width: 320px;
+  width: 100%;
+  height: 500px;
+  padding: var(--padding-type1);
+  box-sizing: border-box;
+}
+
+.todo-inner {
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  border: 1px solid var(--border-color);
+  box-sizing: border-box;
+}
+
+.todo-head {
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.todo-body {
+  height: 500px;
+  max-height: 100%;
+}
+
+.todo-foot {
+  flex-shrink: 0;
+}
