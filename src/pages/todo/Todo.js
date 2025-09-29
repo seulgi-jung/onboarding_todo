@@ -1,8 +1,8 @@
 import './Todo.css';
-import { TodoInput } from '../../components/todo/todoInput/TodoInput';
+import { TodoInput } from '../../components/todo/todoInput/TodoInput.js';
 import { TodoList } from '../../components/todo/todoList/TodoList.js';
-import { TodoEmpty } from '../../components/todo/todoEmpty/TodoEmpty';
-import { TodoFoot } from '../../components/todo/TodoFoot/TodoFoot';
+import { TodoEmpty } from '../../components/todo/todoEmpty/TodoEmpty.js';
+import { TodoFoot } from '../../components/todo/TodoFoot/TodoFoot.js';
 import { EMPTY_MSG, INPUT_PLACEHOLDER } from '../../const/todo.const.js';
 
 export const Todo = ({ todos, todoState }) => {

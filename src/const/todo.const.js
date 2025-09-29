@@ -5,3 +5,6 @@ export const FILTER_STATE = {
   ACTIVE: 'active',
   COMPLETE: 'complete',
 };
+export const MOUSE_EVENT = {
+  RIGHT: 2,
+};

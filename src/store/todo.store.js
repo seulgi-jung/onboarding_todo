@@ -1,7 +1,5 @@
-import { FILTER_STATE } from '../const/todo.const.js';
-import { renderList } from '../utils/render/todo.rendor.js';
-import { getTodos, setTodos } from '../service/todo.service.js';
-
+import { setTodos } from '../service/todo.service.js';
+import { changeFilterList } from '../ui/todo/todo.dom.js';
 export const addTodo = function (value) {
   const timestamp = Date.now();
   const todo = {
@@ -32,7 +30,6 @@ export const changeCompleteTodo = function (targetKey) {
     this.todos = [targetTodo, ...filteredTodos];
   }
 
-  renderList.bind(this)(this.todos);
   setTodos(this.id, this.todos);
 };
 
@@ -41,22 +38,8 @@ export const deleteCompleteTodo = function () {
 
   this.todos = filteredTodo;
   this.todoState.complete = 0;
-  this.updateSummary();
 
-  switch (this.filterState) {
-    case FILTER_STATE.ALL:
-      this.filterAll();
-      break;
-    case FILTER_STATE.COMPLETE:
-      this.filterComplete();
-      break;
-    case FILTER_STATE.ACTIVE:
-      this.filterActive();
-      break;
-    default:
-      break;
-  }
-
+  changeFilterList.bind(this)();
   setTodos(this.id, this.todos);
 };
 
@@ -71,7 +54,15 @@ export const updateTodoState = function (targetChecked) {
 };
 
 export const setTodoState = function () {
+  this.todoState = {
+    complete: 0,
+    incomplete: 0,
+  };
   this.todos.forEach((todo) => {
     todo.complete ? this.todoState.complete++ : this.todoState.incomplete++;
   });
+};
+
+export const increaseIncomplete = function () {
+  this.todoState.incomplete++;
 };
